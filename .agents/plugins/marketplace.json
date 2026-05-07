@@ -1,0 +1,22 @@
+{
+  "name": "topview-ai-marketplace",
+  "interface": {
+    "displayName": "TopView AI"
+  },
+  "plugins": [
+    {
+      "name": "topview-ai",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/topviewai/codex-topview-ai.git",
+        "path": "./topview-ai/0.4.0",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "INSTALLED_BY_DEFAULT",
+        "authentication": "ON_USE"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

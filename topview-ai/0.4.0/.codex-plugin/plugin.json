@@ -1,0 +1,57 @@
+{
+  "name": "topview-ai",
+  "version": "0.4.0",
+  "description": "Use TopView AI from Codex to research content, write Seedance prompts, generate media, and publish videos to TikTok, Instagram, and YouTube.",
+  "author": {
+    "name": "Topview AI",
+    "email": "support@topview.ai",
+    "url": "https://github.com/topviewai"
+  },
+  "homepage": "https://www.topview.ai",
+  "repository": "https://github.com/topviewai/codex-topview-ai",
+  "license": "MIT",
+  "keywords": [
+    "topview",
+    "video",
+    "image",
+    "avatar",
+    "voice",
+    "product",
+    "creative-ai",
+    "seedance",
+    "prompt",
+    "research",
+    "content-collection",
+    "competitor-research",
+    "upload",
+    "youtube",
+    "tiktok",
+    "instagram"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "TopView AI",
+    "shortDescription": "Research content, generate media, and publish videos.",
+    "longDescription": "TopView AI lets Codex research public web and social content, plan, create, and distribute marketing media: collect structured sources, creator lists, comments, trend signals, competitor content, and prompts; write Seedance 2.0 video prompts and storyboards; generate videos, images, talking avatars, product model shots, background removal, and voice outputs; then upload finished videos to TikTok, Instagram, and YouTube through the local social-upload workflow.",
+    "developerName": "Topview AI",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://www.topview.ai",
+    "privacyPolicyURL": "https://www.topview.ai/privacy",
+    "termsOfServiceURL": "https://www.topview.ai/terms",
+    "defaultPrompt": [
+      "Write a Seedance video prompt.",
+      "Collect competitor content ideas from YouTube and Reddit.",
+      "Generate a short product video.",
+      "Upload this video to YouTube."
+    ],
+    "brandColor": "#2F46FF",
+    "composerIcon": "./assets/topview-logo.png",
+    "logo": "./assets/topview-logo.png",
+    "screenshots": []
+  }
+}
