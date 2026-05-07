@@ -5,7 +5,7 @@ TopView AI for Codex helps with the full content production loop: research what 
 Ask Codex to install this plugin with one message:
 
 ```text
-请安装 TopView AI Codex 插件：https://github.com/topviewai/codex-topview-ai.git，安装后请提示我重启 Codex。
+Please install the TopView AI Codex plugin from https://github.com/topviewai/codex-topview-ai.git and tell me when I should restart Codex.
 ```
 
 Codex can add the marketplace by running:
@@ -33,15 +33,15 @@ Typical tasks include competitor research, trend discovery, AI video prompt coll
 ## Example Prompts
 
 ```text
-帮我调研最近 AI 视频广告的爆款选题，并整理成适合 TopView 生成的创意 brief。
+Research recent high-performing AI video ad topics and turn them into creative briefs for TopView generation.
 ```
 
 ```text
-帮我把这个产品介绍写成 Seedance 2.0 分镜提示词，然后用 TopView AI 生成视频。
+Turn this product introduction into a Seedance 2.0 storyboard prompt, then generate the video with TopView AI.
 ```
 
 ```text
-把生成好的视频先 dry run 上传到 YouTube，确认没问题后再问我是否发布。
+Run a YouTube dry-run upload for the generated video, then ask me before publishing.
 ```
 
 ## Layout

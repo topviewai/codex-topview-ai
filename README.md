@@ -7,7 +7,7 @@ TopView AI for Codex turns a short creative request into a complete marketing-co
 Send this to Codex:
 
 ```text
-请安装 TopView AI Codex 插件：https://github.com/topviewai/codex-topview-ai.git，安装后请提示我重启 Codex。
+Please install the TopView AI Codex plugin from https://github.com/topviewai/codex-topview-ai.git and tell me when I should restart Codex.
 ```
 
 Codex can add this marketplace by running:
@@ -31,19 +31,19 @@ After installation, restart Codex if prompted. Then start a new chat and mention
 ## Example Prompts
 
 ```text
-帮我调研 YouTube 和 Reddit 上最近热门的 AI 产品视频选题，并整理成 20 条可拍摄方向。
+Research trending AI product video ideas on YouTube and Reddit, then organize 20 directions we can turn into videos.
 ```
 
 ```text
-帮我把这个产品卖点写成 Seedance 2.0 视频提示词，适合 15 秒 TikTok 广告。
+Turn this product selling point into a Seedance 2.0 video prompt for a 15-second TikTok ad.
 ```
 
 ```text
-用 TopView AI 生成一个产品展示短视频，完成后先做 YouTube 私密上传测试。
+Use TopView AI to generate a short product showcase video, then run a private YouTube upload test.
 ```
 
 ```text
-采集竞品在 TikTok 上的爆款开头，并总结可复用的 hook 模板。
+Collect high-performing competitor hooks on TikTok and summarize reusable hook templates.
 ```
 
 ## Bundled Skills
