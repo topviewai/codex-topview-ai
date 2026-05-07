@@ -1,5 +1,7 @@
 # TopView AI Codex Plugin
 
+TopView AI for Codex helps with the full content production loop: research what to make, write stronger prompts and scripts, generate media assets with TopView AI, organize outputs, and publish finished videos to social platforms.
+
 Ask Codex to install this plugin with one message:
 
 ```text
@@ -14,6 +16,8 @@ codex plugin marketplace add https://github.com/topviewai/codex-topview-ai.git
 
 TopView AI lets Codex collect public content research, write Seedance prompts, generate and edit marketing media through TopView's Python toolkit, then publish finished videos to social platforms.
 
+Typical tasks include competitor research, trend discovery, AI video prompt collection, Seedance 2.0 prompt writing, product video generation, talking avatar creation, background removal, product model shots, text-to-speech, board management, and safe social publishing dry runs.
+
 ## Capabilities
 
 - Prompt writing: Seedance 2.0 video prompts, scripts, shot lists, and storyboards.
@@ -25,6 +29,20 @@ TopView AI lets Codex collect public content research, write Seedance prompts, g
 - Voice workflows: text-to-speech, voice search, and voice cloning.
 - Board workflows: organize generated results and return editable TopView board links.
 - Social publishing: upload videos to TikTok, Instagram, and YouTube through a logged-in Chrome debug browser.
+
+## Example Prompts
+
+```text
+帮我调研最近 AI 视频广告的爆款选题，并整理成适合 TopView 生成的创意 brief。
+```
+
+```text
+帮我把这个产品介绍写成 Seedance 2.0 分镜提示词，然后用 TopView AI 生成视频。
+```
+
+```text
+把生成好的视频先 dry run 上传到 YouTube，确认没问题后再问我是否发布。
+```
 
 ## Layout
 
