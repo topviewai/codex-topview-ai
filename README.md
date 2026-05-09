@@ -5,7 +5,37 @@ TopView AI for Codex helps with the full content production loop: research compe
 ## Install With One Message
 
 ```text
-Please install the TopView AI plugin zip I uploaded. The goal is to make it referenceable as [@topview-ai](plugin://topview-ai@local). Do not only add the marketplace; extract the zip to %USERPROFILE%\Documents\Codex\local-marketplaces\topview-ai, set the marketplace name to local, enable [plugins."topview-ai@local"] in the Codex config, and copy topview-ai\0.4.0 to %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0. When finished, remind me to restart Codex and start a new chat to test the reference.
+Please install the TopView AI Codex plugin from https://github.com/topviewai/codex-topview-ai.git and make sure it is fully referenceable as [@topview-ai](plugin://topview-ai@local).
+
+This is a required full local installation flow. Do not stop after adding a marketplace, and do not only clone the repository. You must complete every step below:
+
+1. Clone or download the GitHub repository into:
+   %USERPROFILE%\Documents\Codex\local-marketplaces\topview-ai
+
+2. Treat this local marketplace as the `local` marketplace. If any marketplace metadata or config entry is created or edited, the marketplace name/id must be `local`.
+
+3. Enable the plugin in the Codex config by adding or updating:
+   [plugins."topview-ai@local"]
+   enabled = true
+
+4. Copy the actual plugin package into the Codex plugin cache at:
+   %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0
+
+   Important: in the current GitHub repository, the plugin package files are at the repository root. The files and folders that must be copied into the cache directory include `.codex-plugin`, `skills`, `tools`, `assets`, `results`, and `README.md`. If the source is a zip that contains `topview-ai\0.4.0`, copy the contents of that `topview-ai\0.4.0` directory instead.
+
+5. After installation, verify that the install is complete. Check that all of these exist:
+   %USERPROFILE%\Documents\Codex\local-marketplaces\topview-ai
+   %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0\.codex-plugin\plugin.json
+   %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0\skills\topview-skill\SKILL.md
+   %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0\skills\social-media-uploader\SKILL.md
+   %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0\tools\seo-browser-uploader
+
+6. Open `.codex-plugin\plugin.json` from the cache directory and confirm that the plugin name is `topview-ai` and the version is `0.4.0`.
+
+7. Only after all checks pass, tell me that installation is complete, remind me to restart Codex, and tell me to start a new chat and test:
+   [@topview-ai](plugin://topview-ai@local)
+
+If any required file, config entry, or cache directory is missing, do not claim success. Fix the installation first, then run the verification checks again.
 ```
 
 ## What This Plugin Does
