@@ -4,61 +4,234 @@ TopView AI for Codex helps with the full content production loop: research compe
 
 ## Install With One Message
 
-```text
 Please install the TopView AI Codex plugin from https://github.com/topviewai/codex-topview-ai.git and make sure it is fully referenceable as [@topview-ai](plugin://topview-ai@local).
 
-This is a required full local installation flow. Do not stop after adding a marketplace, and do not only clone the repository. You must complete every step below:
+This is a required full local installation flow. Do not stop after cloning the repository. You must complete every step below.
 
-1. Clone or download the GitHub repository into:
-   %USERPROFILE%\Documents\Codex\local-marketplaces\topview-ai
+### 1. Clone The Repository
 
-2. Treat this local marketplace as the `local` marketplace. If any marketplace metadata or config entry is created or edited, the marketplace name/id must be `local`.
+Clone or download the GitHub repository into:
 
-3. Enable the plugin in the Codex config by adding or updating:
-   [plugins."topview-ai@local"]
-   enabled = true
-
-4. Copy the actual plugin package into the Codex plugin cache at:
-   %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0
-
-   Important: in the current GitHub repository, the plugin package files are at the repository root. The files and folders that must be copied into the cache directory include `.codex-plugin`, `skills`, `tools`, `assets`, `results`, and `README.md`. If the source is a zip that contains `topview-ai\0.4.0`, copy the contents of that `topview-ai\0.4.0` directory instead.
-
-5. After installation, verify that the install is complete. Check that all of these exist:
-   %USERPROFILE%\Documents\Codex\local-marketplaces\topview-ai
-   %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0\.codex-plugin\plugin.json
-   %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0\skills\topview-skill\SKILL.md
-   %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0\skills\social-media-uploader\SKILL.md
-   %USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0\tools\seo-browser-uploader
-
-6. Open `.codex-plugin\plugin.json` from the cache directory and confirm that the plugin name is `topview-ai` and the version is `0.4.0`.
-
-7. Only after all checks pass, tell me that installation is complete, remind me to restart Codex, and tell me to start a new chat and test:
-   [@topview-ai](plugin://topview-ai@local)
-
-If any required file, config entry, or cache directory is missing, do not claim success. Fix the installation first, then run the verification checks again.
+```text
+%USERPROFILE%\Documents\Codex\local-marketplaces\topview-ai
 ```
 
-## What This Plugin Does
+On macOS/Linux, use the equivalent path:
 
-- Content research: collect structured public sources, competitor examples, creator lists, comments, trend signals, links, metrics, and AI prompts from platforms such as YouTube, Reddit, Bilibili, TikTok, and X when available.
-- Video writing: turn rough ideas into creative angles, hooks, scripts, shot lists, storyboards, and model-ready prompts.
-- Video generation: create text-to-video, image-to-video, reference-based video, and Storyboard preview images through TopView AI.
-- Image workflows: generate images, edit images, remove backgrounds, and create product model showcase visuals.
-- Avatar and voice workflows: create presenter-style talking avatar videos, text-to-speech audio, and voice-related assets.
-- Board workflows: organize generated assets and return editable TopView board links.
-- Social publishing: upload finished videos to TikTok, Instagram, and YouTube through the local social-upload workflow with safe dry-run support.
+```text
+~/Documents/Codex/local-marketplaces/topview-ai
+```
 
-## Repository Layout
+### 2. Create The Codex Marketplace Structure
 
-- `.codex-plugin/plugin.json`: TopView AI plugin manifest.
-- `skills/topview-skill/`: main TopView AI workflow router and Python toolkit.
-- `skills/multi-platform-content-collector/`: public web and social content collection workflow.
-- `skills/video-script-writer/`: video creative strategy, script, storyboard, and prompt writer.
-- `skills/social-media-uploader/`: TikTok, Instagram, and YouTube publishing workflow.
-- `tools/seo-browser-uploader/`: local browser-based social upload CLI.
+Codex does not discover a plugin by scanning the repository root directly. The local marketplace must include:
 
-## Requirements
+```text
+topview-ai/
+  .agents/
+    plugins/
+      marketplace.json
+  plugins/
+    topview-ai/
+      .codex-plugin/
+      skills/
+      tools/
+      assets/
+      results/
+      README.md
+```
 
-TopView generation requires a TopView account, available credits, Python 3.10 or newer, and network access to `https://www.topview.ai`.
+Copy the actual plugin package files from the repository root into:
 
-Social publishing requires Chrome running with remote debugging on port `9222`, with the target social account already logged in. The uploader supports dry runs and should not publish without explicit user confirmation.
+```text
+%USERPROFILE%\Documents\Codex\local-marketplaces\topview-ai\plugins\topview-ai
+```
+
+The copied files and folders must include:
+
+```text
+.codex-plugin
+skills
+tools
+assets
+results
+README.md
+```
+
+### 3. Add The Marketplace Index
+
+Create this file:
+
+```text
+%USERPROFILE%\Documents\Codex\local-marketplaces\topview-ai\.agents\plugins\marketplace.json
+```
+
+With this content:
+
+```json
+{
+  "name": "local",
+  "interface": {
+    "displayName": "Local"
+  },
+  "plugins": [
+    {
+      "name": "topview-ai",
+      "source": {
+        "source": "local",
+        "path": "./plugins/topview-ai"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
+```
+
+### 4. Register The Local Marketplace
+
+Run:
+
+```bash
+codex plugin marketplace add ~/Documents/Codex/local-marketplaces/topview-ai
+```
+
+On Windows, use:
+
+```powershell
+codex plugin marketplace add "$env:USERPROFILE\Documents\Codex\local-marketplaces\topview-ai"
+```
+
+The marketplace name/id must be `local`.
+
+### 5. Enable The Plugin
+
+Add or update this entry in the Codex config file:
+
+```toml
+[plugins."topview-ai@local"]
+enabled = true
+```
+
+The config file is usually located at:
+
+```text
+~/.codex/config.toml
+```
+
+### 6. Verify The Installation
+
+Check that all of these exist:
+
+```text
+~/Documents/Codex/local-marketplaces/topview-ai/.agents/plugins/marketplace.json
+~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/.codex-plugin/plugin.json
+~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/skills/topview-skill/SKILL.md
+~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/skills/social-media-uploader/SKILL.md
+~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/tools/seo-browser-uploader
+```
+
+Open:
+
+```text
+~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/.codex-plugin/plugin.json
+```
+
+Confirm:
+
+```json
+{
+  "name": "topview-ai",
+  "version": "0.4.0"
+}
+```
+
+### 7. Restart Codex
+
+Fully quit and restart the Codex app. Opening a new chat is not enough if the plugin list was already loaded.
+
+After restart, test:
+
+```text
+[@topview-ai](plugin://topview-ai@local)
+```
+
+If the plugin does not appear in the plugin list, verify that `marketplace.json` exists and that it points to `./plugins/topview-ai`. Do not claim installation success until the marketplace index, plugin package, config entry, and verification checks all pass.
+
+## Environment Requirements
+
+- Codex Desktop or Codex CLI with local plugin support.
+- Python 3.10 or newer available to Codex. The TopView scripts use modern Python type syntax that is not compatible with Python 3.9.
+- Python packages listed in `skills/topview-skill/scripts/requirements.txt` installed for the Python runtime that runs the scripts:
+  - `requests>=2.28.0`
+  - `python-dotenv>=1.0.0`
+- Network access to `https://www.topview.ai` for login, account checks, and generation API calls.
+- A TopView account with available credits for generation tasks.
+- Local credential storage access. Login saves credentials to `%USERPROFILE%\.topview\credentials.json` on Windows, or `~/.topview/credentials.json` on macOS/Linux.
+- For social publishing only: Chrome running with remote debugging on port `9222`, with TikTok, Instagram, or YouTube already logged in.
+
+Codex Desktop may include a bundled Python runtime, but plugin installers should not assume every user has that runtime or that it already contains the required packages. If a login or generation script fails with missing packages, install the requirements into the same Python environment used by Codex.
+
+TopView AI lets Codex collect public content research, write scripts and model-ready prompts, generate and edit marketing media through TopView's Python toolkit, then publish finished videos to social platforms.
+
+Typical tasks include competitor research, trend discovery, AI video prompt collection, video scriptwriting, storyboard and shot-list planning, product video generation, talking avatar creation, background removal, product model shots, text-to-speech, board management, and safe social publishing dry runs.
+
+## Video Workflow
+
+For new video creation requests, the plugin is expected to follow this sequence:
+
+1. Analyze the user's production goal.
+2. Ask for any missing inputs needed to make a good brief.
+3. Write a first draft script, storyboard, or model-ready prompt.
+4. Show the draft to the user and wait for confirmation or revisions.
+5. After script confirmation, ask whether to generate a Storyboard preview image（分镜图）for visual confirmation. The user can skip this and go directly to video generation.
+6. Only after confirmation or skip decision, generate the video with TopView.
+
+This workflow is intentional. The plugin should not jump directly from a one-line request to video generation unless the user explicitly asks to skip review.
+
+## Capabilities
+
+- Video writing: creative angles, hooks, scripts, shot lists, storyboards, and model-ready prompts.
+- Content research: collect structured public sources, competitor content, creators, comments, trends, links, and AI prompts across platforms.
+- Video generation: text-to-video, image-to-video, and reference-based video.
+- Image generation and editing: text-to-image, image edits, Storyboard grid previews, and style changes.
+- Talking avatars: presenter-style videos from photos and scripts.
+- Product workflows: background removal and model showcase images.
+- Voice workflows: text-to-speech, voice search, and voice cloning.
+- Board workflows: organize generated results and return editable TopView board links.
+- Social publishing: upload videos to TikTok, Instagram, and YouTube through a logged-in Chrome debug browser.
+
+## Example Prompts
+
+```text
+Research recent high-performing AI video ad topics and turn them into creative briefs for TopView generation.
+```
+
+```text
+Turn this product introduction into a short-form video script and storyboard prompt, then generate the video with TopView AI.
+```
+
+```text
+Run a YouTube dry-run upload for the generated video, then ask me before publishing.
+```
+
+## Layout
+
+- `.codex-plugin/plugin.json`: plugin manifest.
+- `skills/topview-skill/SKILL.md`: compact Codex-facing workflow.
+- `skills/multi-platform-content-collector/SKILL.md`: multi-platform public content collection workflow.
+- `skills/video-script-writer/SKILL.md`: video creative strategy, script, storyboard, and prompt writer.
+- `skills/social-media-uploader/SKILL.md`: TikTok, Instagram, and YouTube upload workflow.
+- `skills/topview-skill/references/`: focused module docs.
+- `skills/topview-skill/scripts/`: TopView Python toolkit.
+
+## Notes
+
+Generation requires a TopView account and credits. The skill handles login by sending the user a direct TopView login link in chat.
+
+Social publishing requires a Chrome debug browser on port 9222 with the target platform already logged in. The uploader supports safe dry runs with `--no-publish`.
+
+Content collection uses public sources by default. Browser-driven platforms such as TikTok and X should only be enabled when the user explicitly asks for them and the existing browser login state is available.
