@@ -8,7 +8,51 @@ Please install the TopView AI Codex plugin from https://github.com/topviewai/cod
 
 This is a required full local installation flow. Do not stop after cloning the repository, do not only add the marketplace, and do not only copy the plugin cache. You must complete every step below.
 
-### 1. Clone The Repository
+### 1. Install And Verify Required Environment Dependencies
+
+Install and verify all runtime dependencies before registering the plugin. Do not claim installation success if any required command or Python package is missing.
+
+Required for core TopView generation:
+
+- Codex Desktop or Codex CLI with local plugin support.
+- Python 3.10 or newer. The TopView scripts use modern Python type syntax that is not compatible with Python 3.9.
+- Python packages for `skills/topview-skill/scripts/`:
+  - `requests>=2.28.0`
+  - `python-dotenv>=1.0.0`
+
+Required for `multi-platform-content-collector`:
+
+- `opencli` CLI available on `PATH`.
+- `curl` available on `PATH` for Reddit and Bilibili detail fetch scripts.
+- Browser Bridge / OpenCLI browser support available for browser-driven platforms such as X/Twitter, TikTok, Xiaohongshu, Weibo, and Douyin.
+- Existing browser login sessions for browser-driven platforms that require login. Never ask the user for passwords.
+
+Required for social publishing:
+
+- Chrome running with remote debugging on port `9222`.
+- Target TikTok, Instagram, or YouTube account already logged in inside that debug browser.
+- Python package dependencies for `tools/seo-browser-uploader/`:
+  - `DrissionPage>=4.0`
+  - `requests>=2.28`
+  - `openai>=1.0`
+  - `jinja2>=3.1`
+
+Minimum verification commands:
+
+```bash
+python --version
+opencli doctor
+curl --version
+```
+
+Install Python dependencies into the same Python environment that Codex will use:
+
+```bash
+python -m pip install -r skills/topview-skill/scripts/requirements.txt
+python -m pip install -e tools/seo-browser-uploader
+```
+
+### 2. Clone The Repository
 
 Clone or download the GitHub repository into:
 
@@ -22,7 +66,7 @@ On macOS/Linux, use the equivalent path:
 ~/Documents/Codex/local-marketplaces/topview-ai
 ```
 
-### 2. Create The Codex Marketplace Structure
+### 3. Create The Codex Marketplace Structure
 
 Codex does not discover a plugin by scanning the repository root directly. The local marketplace must include a marketplace index and a plugin package directory:
 
@@ -64,7 +108,7 @@ results
 README.md
 ```
 
-### 3. Add The Marketplace Index
+### 4. Add The Marketplace Index
 
 Create this file:
 
@@ -105,7 +149,7 @@ With this content:
 
 The marketplace name/id must be exactly `local`, and the plugin source path must be exactly `./plugins/topview-ai`.
 
-### 4. Copy The Plugin Into The Codex Cache
+### 5. Copy The Plugin Into The Codex Cache
 
 Some Codex Desktop builds do not load a newly registered local plugin until the plugin package also exists in the local plugin cache. This cache copy is required.
 
@@ -136,7 +180,7 @@ That cache directory must contain the plugin package files directly:
 
 Do not put an extra nested `topview-ai` or `plugins/topview-ai` folder inside the cache directory.
 
-### 5. Register The Local Marketplace
+### 6. Register The Local Marketplace
 
 Run:
 
@@ -152,7 +196,7 @@ codex plugin marketplace add "$env:USERPROFILE\Documents\Codex\local-marketplace
 
 After registration, make sure the marketplace id/name is `local`.
 
-### 6. Enable The Plugin
+### 7. Enable The Plugin
 
 Add or update this entry in the Codex config file:
 
@@ -173,7 +217,7 @@ On Windows, the equivalent path is usually:
 %USERPROFILE%\.codex\config.toml
 ```
 
-### 7. Verify The Installation
+### 8. Verify The Installation
 
 Do not claim installation success until both the marketplace package and the cache package are present.
 
@@ -207,14 +251,14 @@ Confirm both contain:
 
 ```json
 {
-  name: topview-ai,
-  version: 0.4.0
+  "name": "topview-ai",
+  "version": "0.4.0"
 }
 ```
 
 If the plugin still does not appear, verify that `marketplace.json` exists, that it points to `./plugins/topview-ai`, and that the cache directory path is exactly `~/.codex/plugins/cache/local/topview-ai/0.4.0`.
 
-### 8. Restart Codex
+### 9. Restart Codex
 
 Fully quit and restart the Codex app. Opening a new chat is not enough if the plugin list was already loaded.
 
