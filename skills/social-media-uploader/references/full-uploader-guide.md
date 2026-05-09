@@ -2,7 +2,7 @@
 name: social-media-uploader
 description: "Upload videos to TikTok, Instagram, and YouTube via the social-upload CLI. Supports single/multi-platform batch upload with platform-native scheduled publishing. Uses Chrome debug browser with existing login sessions — zero credentials needed. Use when: 上传视频, 发布视频, 上传到TikTok, 上传到Instagram, 上传到YouTube, 社交媒体上传, 全平台发布, 定时发布, scheduled upload, upload video, post video"
 version: 1.0.0
-author: shenyajing
+author: TopView AI
 tags: [social-media, upload, tiktok, instagram, youtube, video, schedule, automation, chrome, cdp]
 ---
 

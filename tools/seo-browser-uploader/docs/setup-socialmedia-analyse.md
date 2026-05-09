@@ -112,7 +112,7 @@ YouTube 不执行全量适配器验证（耗时太长），仅检查浏览器是
 ```
 🔍 验证各平台登录状态：
   ✅ YouTube: 已登录
-  ✅ TikTok: 已登录（用户: @shenyajing）
+  ✅ TikTok: 已登录（用户: @example_tiktok）
   ❌ Instagram: 未登录 (missing ds_user_id cookie)
 
 ⚠️ Instagram 尚未登录成功。请在调试浏览器中打开 instagram.com 并登录后回复"好了"。
@@ -149,9 +149,9 @@ YouTube 不执行全量适配器验证（耗时太长），仅检查浏览器是
 
 | 平台 | 检测到的账号 | 采集结果 |
 |------|------------|---------|
-| YouTube | 频道: bill s | ✅ 3 项指标, 20 条视频 (自动检测频道) |
-| TikTok | 用户: @shenyajing | ✅ 14 项指标, 7 条视频 (4-tab 全量) |
-| Instagram | 用户: @shen_yajing | ✅ 9 项指标, 20 条视频 |
+| YouTube | 频道: Example Channel | ✅ 3 项指标, 20 条视频 (自动检测频道) |
+| TikTok | 用户: @example_tiktok | ✅ 14 项指标, 7 条视频 (4-tab 全量) |
+| Instagram | 用户: @example_instagram | ✅ 9 项指标, 20 条视频 |
 
 这些是你想查看的账号吗？
 ```

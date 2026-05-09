@@ -6,14 +6,14 @@ import logging
 
 # region agent log — Debug session 66b267 (TK confirm 调试)
 def _dbg_log_tk(loc, msg, data, hyp, run_id="initial"):
-    """临时 NDJSON 调试日志（tiktok confirm），写到 .cursor/debug-66b267.log。"""
+    """临时 NDJSON 调试日志（tiktok confirm），写到 debug-social-upload.log。"""
     try:
         rec = {
             "sessionId": "66b267", "runId": run_id, "hypothesisId": hyp,
             "timestamp": int(time.time() * 1000),
             "location": loc, "message": msg, "data": data,
         }
-        with open("/Users/shenyajing/Desktop/seo 浏览器操控插件 2/.cursor/debug-66b267.log", "a", encoding="utf-8") as f:
+        with open("debug-social-upload.log", "a", encoding="utf-8") as f:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
     except Exception:
         pass

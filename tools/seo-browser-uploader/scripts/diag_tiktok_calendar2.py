@@ -91,7 +91,7 @@ def _summarize_js() -> str:
 
 
 def main() -> None:
-    video = "/Users/shenyajing/Desktop/seo 浏览器操控插件 2/test_videos/test_upload_20260420_145614.mp4"
+    video = "/path/to/test_upload.mp4"
 
     ctrl, work, baseline_tab_ids, _ = connect_browser(new_window=False)
     tab = find_platform_tab(ctrl, "https://www.tiktok.com/tiktokstudio") or work

@@ -71,7 +71,7 @@ def _list_dialog_buttons(dialog_el) -> list[dict]:
 
 
 def _dbg_log_popup(loc, msg, data):
-    """临时调试日志（与 tiktok.py 共用 .cursor/debug-66b267.log）。"""
+    """临时调试日志（与 tiktok.py 共用 debug-social-upload.log）。"""
     try:
         rec = {
             "sessionId": "66b267", "runId": "popup",
@@ -79,7 +79,7 @@ def _dbg_log_popup(loc, msg, data):
             "location": loc, "message": msg, "data": data,
         }
         with open(
-            "/Users/shenyajing/Desktop/seo 浏览器操控插件 2/.cursor/debug-66b267.log",
+            "debug-social-upload.log",
             "a", encoding="utf-8",
         ) as f:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")

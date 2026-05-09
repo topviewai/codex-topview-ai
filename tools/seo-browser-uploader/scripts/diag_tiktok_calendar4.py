@@ -9,7 +9,7 @@ import time
 from social_uploader.tools.browser_manager import connect_browser, find_platform_tab
 
 
-VIDEO = "/Users/shenyajing/Desktop/seo 浏览器操控插件 2/test_videos/test_upload_20260420_145614.mp4"
+VIDEO = "/path/to/test_upload.mp4"
 
 
 def _dump_js() -> str:
