@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社交媒体数据简报</title>
+<style>
+  :root { --bg: #f8f9fa; --card: #fff; --text: #212529; --muted: #6c757d; --accent: #0d6efd; --success: #198754; --danger: #dc3545; --border: #dee2e6; --warn-bg: #fff3cd; --success-bg: #d1e7dd; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 2rem; max-width: 1080px; margin: 0 auto; }
+  h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.35rem; margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+  h3 { font-size: 1.1rem; margin: 1.5rem 0 0.75rem; color: var(--accent); }
+  .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+  table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; }
+  th, td { padding: 0.5rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+  th { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: var(--muted); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .up { color: var(--success); font-weight: 600; }
+  .down { color: var(--danger); font-weight: 600; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+  .badge-hit { background: #fff3cd; color: #856404; }
+  .badge-flop { background: #f8d7da; color: #842029; }
+  .advice-item { padding: 0.75rem; border-left: 3px solid var(--accent); margin: 0.5rem 0; background: #f0f4ff; border-radius: 0 4px 4px 0; }
+  .highlight { padding: 0.5rem 0.75rem; background: var(--success-bg); border-radius: 4px; margin: 0.25rem 0; }
+  .warning { padding: 0.5rem 0.75rem; background: var(--warn-bg); border-radius: 4px; margin: 0.25rem 0; }
+  blockquote { border-left: 4px solid var(--accent); padding: 1rem; background: #f0f4ff; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  .footer { text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  ol, ul { padding-left: 1.5rem; margin: 0.5rem 0; }
+  li { margin: 0.25rem 0; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+  .summary-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; text-align: center; }
+  .summary-item .label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; }
+  .summary-item .value { font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem; }
+  .video-table { font-size: 0.9rem; }
+  .video-table td { padding: 0.4rem 0.6rem; }
+  .video-title { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .stat-note { font-size: 0.85rem; color: var(--muted); margin: 0.5rem 0; padding: 0.5rem; background: #f0f0f0; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<h1>社交媒体数据简报</h1>
+<p class="meta">生成时间: {{ generated_at }} &nbsp;|&nbsp; 分析周期: 最近 {{ period_days }} 天</p>
+
+{% if highlights or warnings %}
+<div class="card" style="border-left: 4px solid {% if highlights %}var(--success){% else %}var(--danger){% endif %}">
+  <h3 style="margin-top:0">关键发现</h3>
+  {% for h in highlights[:3] %}
+  <div class="highlight">✅ {{ h }}</div>
+  {% endfor %}
+  {% for w in warnings[:3] %}
+  <div class="warning">⚠️ {{ w }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<h2>一、数据总览</h2>
+
+{% for platform, data in platforms.items() %}
+<div class="card">
+  <h3>{{ platform | upper }}</h3>
+  <table>
+    <thead><tr><th>指标</th><th>当前值</th><th>变化</th></tr></thead>
+    <tbody>
+    {% for metric, info in data.trend.items() %}
+    <tr>
+      <td>{{ metric_label(metric) }}</td>
+      <td class="num">{{ info.current | format_number }}</td>
+      <td>{{ trend_arrow_html(info.change_pct) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if data.engagement_rate is not none %}
+  <p><strong>互动率:</strong> {{ data.engagement_rate }}%</p>
+  {% endif %}
+</div>
+{% endfor %}
+
+{% set cross = build_cross_platform_summary(platforms) %}
+{% if cross %}
+<div class="card">
+  <h3>跨平台对比</h3>
+  <table>
+    <thead>
+      <tr><th>指标</th>{% for p in platforms %}<th style="text-align:right">{{ p | upper }}</th>{% endfor %}</tr>
+    </thead>
+    <tbody>
+    {% for row in cross %}
+    <tr>
+      <td>{{ row.metric }}</td>
+      {% for p in platforms %}
+      <td class="num">{{ row['values'].get(p, '-') }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% if publish_cadence.total_uploads > 0 %}
+<div class="card">
+  <h3>发布节奏</h3>
+  <table>
+    <tbody>
+      <tr><td>周期内上传次数</td><td class="num">{{ publish_cadence.total_uploads }}</td></tr>
+      <tr><td>成功 / 失败</td><td class="num">{{ publish_cadence.successful_uploads }} / {{ publish_cadence.failed_uploads }}</td></tr>
+      {% if publish_cadence.avg_interval_days %}
+      <tr><td>平均发布间隔</td><td class="num">{{ publish_cadence.avg_interval_days }} 天</td></tr>
+      {% endif %}
+      {% for p, count in publish_cadence.by_platform.items() %}
+      <tr><td>{{ p }} 上传次数</td><td class="num">{{ count }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+<h2>二、内容表现</h2>
+
+{% for platform, data in platforms.items() %}
+{% if data.videos.ranked %}
+{% set cols = detect_video_columns(data.videos.ranked) %}
+{% set display_cols = cols[:6] %}
+<div class="card">
+  <h3>{{ platform | upper }} 视频详情 (共 {{ data.videos.count }} 条)</h3>
+  <table class="video-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>标题</th>
+        {% for c in display_cols %}
+        <th style="text-align:right">{{ video_metric_label(c) }}</th>
+        {% endfor %}
+        <th>标记</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for v in data.videos.ranked %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td class="video-title" title="{{ v.title }}">{{ v.title | truncate(50) }}</td>
+      {% for c in display_cols %}
+      <td class="num">{{ v.get(c) | format_number }}</td>
+      {% endfor %}
+      <td>
+        {% if v in data.videos.hits %}<span class="badge badge-hit">🔥 爆款</span>{% endif %}
+        {% if v in data.videos.flops %}<span class="badge badge-flop">⚠️ 低迷</span>{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if data.videos.mean_views is defined %}
+  <p class="stat-note">平均播放量: {{ data.videos.mean_views | format_number }} &nbsp;|&nbsp; 爆款阈值: &gt; 均值 {{ hit_threshold }}x &nbsp;|&nbsp; 低迷阈值: &lt; 均值 {{ flop_threshold }}x</p>
+  {% endif %}
+</div>
+{% endif %}
+{% endfor %}
+
+{% if highlights %}
+<h3>亮点</h3>
+{% for h in highlights %}
+<div class="highlight">✅ {{ h }}</div>
+{% endfor %}
+{% endif %}
+
+{% if warnings %}
+<h3>预警</h3>
+{% for w in warnings %}
+<div class="warning">⚠️ {{ w }}</div>
+{% endfor %}
+{% endif %}
+
+<h2>三、下一步创作建议</h2>
+
+{% if advice.summary %}
+<blockquote>{{ advice.summary }}</blockquote>
+{% endif %}
+
+{% if advice.recommended_topics %}
+<h3>推荐主题</h3>
+<ol>
+{% for topic in advice.recommended_topics %}
+  <li class="advice-item">{{ topic }}</li>
+{% endfor %}
+</ol>
+{% endif %}
+
+{% if advice.content_format %}
+<h3>内容形式</h3>
+<div class="advice-item">{{ advice.content_format }}</div>
+{% endif %}
+
+{% if advice.title_hooks %}
+<h3>标题参考</h3>
+<ul>
+{% for hook in advice.title_hooks %}
+  <li>{{ hook }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if advice.publish_schedule %}
+<h3>发布节奏</h3>
+<div class="advice-item">{{ advice.publish_schedule }}</div>
+{% endif %}
+
+{% if advice.improvements %}
+<h3>改进方向</h3>
+<ul>
+{% for item in advice.improvements %}
+  <li>{{ item }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<div class="footer">
+  报告由 social-upload monitor 自动生成 &nbsp;|&nbsp; 建议来源: {{ advice.source | default("rules") }}
+</div>
+
+</body>
+</html>

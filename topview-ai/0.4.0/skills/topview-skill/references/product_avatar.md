@@ -106,6 +106,19 @@ python {baseDir}/scripts/product_avatar.py run \
 
 ### Manual Mode with V4 (banana_pro)
 
+Recommended cross-platform form:
+
+```bash
+python {baseDir}/scripts/product_avatar.py run \
+  --product-image product.png \
+  --template-image template.png \
+  --mode manual \
+  --version v4 \
+  --location-points 10.5,20.0 30.5,40.0
+```
+
+Legacy JSON form:
+
 ```bash
 python {baseDir}/scripts/product_avatar.py run \
   --product-image product.png \
@@ -146,7 +159,8 @@ python {baseDir}/scripts/product_avatar.py run \
 | `--mode` | `auto` (automatic) or `manual` (coordinate-based) |
 | `--keep-target` | `model` (default) or `product`; only for auto mode |
 | `--version` | `v3` (default) or `v4` (banana_pro, supports manual) |
-| `--location` | Product coordinates as JSON 2D array |
+| `--location-points` | Recommended product coordinates as `x,y` pairs, e.g. `10.5,20.0 30.5,40.0` |
+| `--location` | Legacy product coordinates as JSON 2D array |
 | `--product-size` | Product size (enum value) |
 | `--project-id` | Project ID |
 | `--board-id` | Board ID |

@@ -1,0 +1,115 @@
+{
+  "youtube": {
+    "upload_icon": [
+      "@id=upload-icon",
+      "@aria-label=上传视频",
+      "@aria-label=Upload videos"
+    ],
+    "create_button": [
+      "@id=create-icon",
+      "text:创建",
+      "text:Create"
+    ],
+    "upload_menu_item": [
+      "@id=text-item-0",
+      "text:上传视频",
+      "text:Upload videos"
+    ],
+    "file_input": [
+      "xpath://input[@type=\"file\" and @name=\"Filedata\"]",
+      "xpath://ytcp-uploads-file-picker//input[@type=\"file\"]",
+      "xpath://input[@type=\"file\" and not(@accept=\"application/pdf\") and not(@accept=\"image/*\")]",
+      "xpath://input[@type=\"file\"]"
+    ],
+    "title_box": [
+      "#textbox",
+      "xpath://div[@id=\"textbox\" and @aria-label and (contains(@aria-label,\"标题\") or contains(@aria-label,\"Title\") or contains(@aria-label,\"title\"))]",
+      "xpath://ytcp-social-suggestions-textbox[@id=\"title-textarea\"]//div[@id=\"textbox\"]",
+      "xpath://div[@id=\"title-wrapper\"]//div[@id=\"textbox\"]"
+    ],
+    "desc_box": [
+      "xpath://div[@id=\"textbox\" and @aria-label and (contains(@aria-label,\"描述\") or contains(@aria-label,\"Description\") or contains(@aria-label,\"description\") or contains(@aria-label,\"Tell viewers\"))]",
+      "xpath://ytcp-social-suggestions-textbox[@id=\"description-textarea\"]//div[@id=\"textbox\"]",
+      "xpath://div[@id=\"description-wrapper\"]//div[@id=\"textbox\"]"
+    ],
+    "next_button": [
+      "#next-button"
+    ],
+    "done_button": [
+      "#done-button"
+    ],
+    "close_buttons": [
+      "#close-button",
+      "#dismiss-button",
+      ".ytcp-button[aria-label=\"Close\"]"
+    ]
+  },
+  "tiktok": {
+    "file_input": [
+      "xpath://input[@type=\"file\"]",
+      "xpath://input[@accept=\"video/*\"]"
+    ],
+    "caption_box": [
+      "xpath://div[@contenteditable=\"true\"]",
+      ".public-DraftEditor-content",
+      ".DraftEditor-editorContainer"
+    ],
+    "post_button": [
+      "@data-e2e=post_video_button",
+      "@data-e2e=post_button",
+      "xpath://button[contains(@class,'post') and contains(@class,'btn')]",
+      "xpath://button[contains(text(),'Post') or contains(text(),'发布')]",
+      "text:Post",
+      "text:发布",
+      "css:button[type='submit'][class*='Button']"
+    ]
+  },
+  "instagram": {
+    "create_button": [
+      "@aria-label=New post",
+      "@aria-label=新帖",
+      "@aria-label=新帖子",
+      "@aria-label=Create",
+      "@aria-label=创建",
+      "xpath://*[local-name()=\"svg\" and @aria-label=\"新帖\"]",
+      "xpath://*[local-name()=\"svg\" and @aria-label=\"新帖子\"]",
+      "xpath://*[local-name()=\"svg\" and @aria-label=\"New post\"]",
+      "xpath://*[local-name()=\"svg\" and @aria-label=\"Create\"]",
+      "xpath://*[local-name()=\"svg\" and @aria-label=\"创建\"]"
+    ],
+    "file_input": [
+      "xpath://input[@type=\"file\"]",
+      "xpath://div[@role=\"dialog\"]//input[@type=\"file\"]"
+    ],
+    "select_from_computer": [
+      "text:Select from computer",
+      "text:Select from your computer",
+      "text:从电脑选择",
+      "text:从设备中选择"
+    ],
+    "next_button": [
+      "@aria-label=Next",
+      "@aria-label=下一步",
+      "xpath://div[@role=\"dialog\"]//div[@role=\"button\" and (normalize-space(text())=\"Next\" or normalize-space(text())=\"下一步\")]",
+      "xpath://div[@role=\"dialog\"]//button[normalize-space(text())=\"Next\" or normalize-space(text())=\"下一步\"]",
+      "text:Next",
+      "text:下一步",
+      "css:button._acan._acap._acas"
+    ],
+    "caption_box": [
+      "xpath://div[@role=\"dialog\"]//div[@aria-label=\"Write a caption...\"]",
+      "xpath://div[@role=\"dialog\"]//div[@aria-label=\"写下你的标题...\"]",
+      "xpath://div[@role=\"dialog\"]//div[@role=\"textbox\"]",
+      "xpath://div[@role=\"dialog\"]//div[@contenteditable=\"true\"]",
+      "xpath://div[@role=\"dialog\"]//textarea"
+    ],
+    "share_button": [
+      "@aria-label=Share",
+      "@aria-label=分享",
+      "xpath://div[@role=\"dialog\"]//button[normalize-space(text())=\"Share\" or normalize-space(text())=\"分享\"]",
+      "xpath://div[@role=\"dialog\"]//div[@role=\"button\" and (normalize-space(text())=\"Share\" or normalize-space(text())=\"分享\")]",
+      "text:Share",
+      "text:分享"
+    ]
+  }
+}

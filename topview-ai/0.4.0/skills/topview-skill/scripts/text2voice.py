@@ -30,6 +30,7 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 
 from shared.client import TopviewClient, TopviewError
+from shared.cli_parsers import parse_json_or_kv_pairs
 from shared.upload import resolve_local_file
 
 SUBMIT_PATH = "/v1/voice/text2voice/task/submit"
@@ -63,7 +64,7 @@ def build_body(args, client: TopviewClient) -> dict:
             args.origin_voice_file, quiet=args.quiet, client=client
         )
     if args.pron_rules:
-        body["pronRules"] = json_mod.loads(args.pron_rules)
+        body["pronRules"] = parse_json_or_kv_pairs(args.pron_rules)
     if args.board_id:
         body["boardId"] = args.board_id
     if args.notice_url:
@@ -159,8 +160,8 @@ def add_submit_args(p):
                    help="Voice emotion name (e.g. happy, sad)")
     p.add_argument("--origin-voice-file", default=None,
                    help="Original voice file fileId or local path")
-    p.add_argument("--pron-rules", default=None,
-                   help='Pronunciation rules as JSON array, e.g. \'[{"oldStr":"行","newStr":"xing"}]\'')
+    p.add_argument("--pron-rules", nargs="+", default=None,
+                   help='Pronunciation rules: 行=xing 重=chong; legacy JSON array is still supported')
     p.add_argument("--board-id", default=None,
                    help="Board ID for task organization")
     p.add_argument("--notice-url", default=None,
@@ -253,7 +254,7 @@ Examples:
 
   # With pronunciation rules
   python text2voice.py run --text "行不行" --voice-id voice-888 \\
-      --pron-rules '[{"oldStr":"行","newStr":"xing"}]'
+      --pron-rules 行=xing
 
   # Download result audio
   python text2voice.py run --text "Hello" --voice-id voice-888 \\

@@ -1,0 +1,581 @@
+{
+  "tiktok": {
+    "wait_upload": {
+      "error_signals": [
+        {
+          "selector": "text:无法处理",
+          "desc": "视频无法处理"
+        },
+        {
+          "selector": "text:Can't be processed",
+          "desc": "Video cannot be processed"
+        },
+        {
+          "selector": "text:Unable to process",
+          "desc": "Unable to process video"
+        },
+        {
+          "selector": "text:出错了",
+          "desc": "上传出错"
+        },
+        {
+          "selector": "text:Something went wrong",
+          "desc": "Something went wrong"
+        },
+        {
+          "selector": "text:Upload failed",
+          "desc": "Upload failed"
+        },
+        {
+          "selector": "text:上传失败",
+          "desc": "上传失败"
+        }
+      ],
+      "error_dismiss": [
+        "@aria-label=Close",
+        "text:替换",
+        "text:Replace",
+        "text:Cancel",
+        "text:取消"
+      ],
+      "editor_ready": [
+        "xpath://div[@contenteditable='true']"
+      ]
+    },
+    "copyright": {
+      "passed_signals": [
+        "text:No issues found",
+        "text:未发现问题"
+      ],
+      "toggle_selector": [
+        "xpath://button[@role='switch' and @aria-checked='true']"
+      ],
+      "toggle_off_selector": [
+        "xpath://button[@role='switch' and @aria-checked='false']"
+      ]
+    },
+    "schedule": {
+      "radio_selector": "input[name=\"postSchedule\"][value=\"schedule\"]",
+      "date_input_class": "TUXTextInputCore-input",
+      "date_value_pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "time_value_pattern": "^\\d{2}:\\d{2}$",
+      "timepicker_item": ".tiktok-timepicker-option-item",
+      "timepicker_hour": ".tiktok-timepicker-left",
+      "timepicker_minute": ".tiktok-timepicker-right",
+      "timepicker_active": "tiktok-timepicker-is-active",
+      "schedule_button_text": [
+        "Schedule",
+        "定时发布",
+        "预约发布"
+      ],
+      "now_radio_selector": "input[name=\"postSchedule\"][value=\"post_now\"]"
+    },
+    "schedule_recipe": {
+      "version": 3,
+      "steps": [
+        {
+          "id": "activate_schedule",
+          "action": "click",
+          "target": {
+            "selector": "input[name=\"postSchedule\"][value=\"schedule\"]",
+            "fallbacks": [
+              "label.Radio__root:nth-child(2)"
+            ]
+          },
+          "fallback": {
+            "text_match": [
+              "预约发布",
+              "Schedule",
+              "定时发布"
+            ]
+          },
+          "wait_after_ms": 1500,
+          "semantic_hint": "schedule 预约发布 定时发布 radio postSchedule"
+        },
+        {
+          "id": "handle_consent_modal",
+          "action": "click",
+          "target": {
+            "selector": ".TUXModal-overlay button[data-type=\"primary\"]",
+            "fallbacks": [
+              ".TUXModal-overlay .Button__root--type-primary",
+              ".common-modal-confirm-modal button[data-type=\"primary\"]"
+            ]
+          },
+          "fallback": {
+            "text_match": [
+              "允许",
+              "Allow",
+              "Agree"
+            ]
+          },
+          "optional": true,
+          "wait_before_ms": 500,
+          "wait_after_ms": 1500,
+          "retry": 2,
+          "semantic_hint": "允许保存视频 consent modal 授权弹窗"
+        },
+        {
+          "id": "open_date_picker",
+          "action": "click",
+          "target": {
+            "selector": ".scheduled-picker > div:last-child .TUXInputBox",
+            "fallbacks": [
+              ".scheduled-picker > div:nth-child(2) .TUXInputBox",
+              ".scheduled-picker > div:last-child input.TUXTextInputCore-input"
+            ]
+          },
+          "wait_after_ms": 800,
+          "retry": 3,
+          "semantic_hint": "日期 date 日历 calendar 打开"
+        },
+        {
+          "id": "pick_date",
+          "action": "pick_option",
+          "container": ".calendar-wrapper",
+          "item_selector": "span.day.valid",
+          "match_text": "${day}",
+          "wait_after_ms": 500,
+          "retry": 5,
+          "semantic_hint": "日期 day 选项 calendar"
+        },
+        {
+          "id": "open_time_picker",
+          "action": "click",
+          "target": {
+            "selector": ".scheduled-picker > div:first-child .TUXInputBox",
+            "fallbacks": [
+              ".scheduled-picker > div:first-child input.TUXTextInputCore-input"
+            ]
+          },
+          "wait_after_ms": 800,
+          "retry": 3,
+          "semantic_hint": "时间 time picker 打开"
+        },
+        {
+          "id": "pick_hour",
+          "action": "pick_option",
+          "container": ".tiktok-timepicker-time-picker-container",
+          "item_selector": "span.tiktok-timepicker-option-text.tiktok-timepicker-left",
+          "match_text": "${hour}",
+          "wait_after_ms": 300,
+          "retry": 5,
+          "semantic_hint": "小时 hour 选择列表 timepicker"
+        },
+        {
+          "id": "pick_minute",
+          "action": "pick_option",
+          "container": ".tiktok-timepicker-time-picker-container",
+          "item_selector": "span.tiktok-timepicker-option-text.tiktok-timepicker-right",
+          "match_text": "${minute}",
+          "wait_after_ms": 500,
+          "retry": 5,
+          "semantic_hint": "分钟 minute 选择列表 timepicker"
+        }
+      ]
+    },
+    "visibility_recipe": {
+      "version": 3,
+      "steps": [
+        {
+          "id": "open_dropdown",
+          "action": "click",
+          "target": {
+            "selector": ".view-auth-container [role='combobox']",
+            "fallbacks": [
+              ".view-auth-container .Select__trigger",
+              ".view-auth-container button[class*='Select']",
+              "[role='combobox']"
+            ]
+          },
+          "verify_text": [
+            "Everyone",
+            "Friends",
+            "Only you",
+            "Only me",
+            "所有人",
+            "好友",
+            "仅自己"
+          ],
+          "fallback": {
+            "text_match": [
+              "Everyone",
+              "Friends",
+              "Only you",
+              "Only me",
+              "所有人",
+              "好友",
+              "仅自己"
+            ]
+          },
+          "wait_after_ms": 800,
+          "retry": 3,
+          "semantic_hint": "可见性 visibility Who can watch 谁可以观看 combobox dropdown select"
+        },
+        {
+          "id": "wait_options",
+          "action": "wait",
+          "target": {
+            "selector": "[role='listbox']",
+            "fallbacks": [
+              ".Select__contentWrapper",
+              "[role='menu']"
+            ]
+          },
+          "max_wait_ms": 3000,
+          "semantic_hint": "下拉菜单 dropdown listbox options visibility"
+        },
+        {
+          "id": "select_option",
+          "action": "pick_option",
+          "container": "[role='listbox']",
+          "item_selector": "[role='option']",
+          "match_text": "${option_text}",
+          "wait_after_ms": 500,
+          "retry": 3,
+          "semantic_hint": "${option_hint} 可见性 选项 option visibility"
+        }
+      ]
+    },
+    "publish_confirm": {
+      "dialog_selectors": [
+        "xpath://*[contains(@class,'TUXModal')]",
+        "xpath://*[@role='dialog' or @role='alertdialog']",
+        "xpath://*[contains(@class,'common-modal') or (contains(@class,'modal') and not(contains(@class,'modal-root')))]"
+      ],
+      "secondary_confirm": [
+        "text:立即发布",
+        "text:Publish now",
+        "text:Post now",
+        "text:Post anyway",
+        "text:Post video",
+        "text:Schedule anyway",
+        "text:Schedule video",
+        "text:仍然发布",
+        "text:继续发布",
+        "text:仍然上传",
+        "text:Upload anyway",
+        "text:Schedule",
+        "text:定时发布",
+        "text:Post"
+      ]
+    },
+    "confirm": {
+      "success_signals": [
+        "xpath://*[not(self::script) and not(self::style) and contains(text(),'已发布')]",
+        "xpath://*[not(self::script) and not(self::style) and contains(text(),'发布成功')]",
+        "xpath://*[not(self::script) and not(self::style) and contains(text(),'Your video has been published')]",
+        "xpath://*[not(self::script) and not(self::style) and contains(text(),'Your video is now public')]",
+        "xpath://*[not(self::script) and not(self::style) and contains(text(),'Video published')]",
+        "xpath://*[not(self::script) and not(self::style) and contains(text(),'Scheduled for')]",
+        "xpath://*[not(self::script) and not(self::style) and contains(text(),'已安排')]",
+        "xpath://*[not(self::script) and not(self::style) and contains(text(),'成功')][@role='alert' or @role='dialog' or @role='status']"
+      ],
+      "success_url_pattern": {
+        "not_contains": [
+          "upload"
+        ],
+        "or_contains": [
+          "manage",
+          "content"
+        ]
+      }
+    },
+    "popups": {
+      "dismiss": [
+        "[aria-label=\"Close\"]",
+        "[aria-label=\"关闭\"]",
+        "text:Maybe later",
+        "text:Not now",
+        "text:Skip",
+        "text:OK",
+        "text:Got it",
+        "text:Cancel",
+        "text:取消",
+        "text:以后再说",
+        "text:跳过",
+        "text:好的",
+        "text:确定",
+        "text:了解",
+        "text:知道了",
+        "text:Decline all",
+        "text:Accept all",
+        "text:允许",
+        "text:Allow",
+        ".TUXModal-overlay button[data-type=\"primary\"]",
+        ".modal-close",
+        ".close-icon",
+        "#tux-portal-container .tux-button--text"
+      ]
+    }
+  },
+  "instagram": {
+    "publish_confirm": {
+      "dialog_selectors": [
+        "xpath://*[@role='dialog' or @role='alertdialog']"
+      ],
+      "secondary_confirm": []
+    },
+    "crop_wait": {
+      "confirm_dismiss": [
+        "text:OK",
+        "text:Got it",
+        "text:确定",
+        "text:知道了"
+      ],
+      "ready_signals": [
+        "text=Next",
+        "text=下一步"
+      ]
+    },
+    "ratio": {
+      "crop_labels": [
+        "Select crop",
+        "Crop",
+        "选择裁剪",
+        "选择裁切"
+      ],
+      "ratio_options": [
+        "text:Original",
+        "text:原始"
+      ]
+    },
+    "navigation": {
+      "next_keywords": [
+        "Next",
+        "下一步"
+      ],
+      "share_keywords": [
+        "Share",
+        "分享"
+      ]
+    },
+    "confirm": {
+      "success_signals": [
+        "text:Your reel has been shared",
+        "text:Post shared",
+        "text:Your post has been shared",
+        "text:has been shared",
+        "text:已分享你的快拍",
+        "text:帖子已分享",
+        "text:你的视频已分享",
+        "text:已分享"
+      ]
+    },
+    "popups": {
+      "dismiss": [
+        "text:以后再说",
+        "text:现在不",
+        "text:好的",
+        "text:确定",
+        "text:了解",
+        "text:知道了",
+        "text:Not Now",
+        "text:Not now",
+        "text:Maybe Later",
+        "text:OK",
+        "text:Got it",
+        "text:Dismiss",
+        "text:Turn off",
+        "text:Decline all",
+        "text:Accept all"
+      ]
+    }
+  },
+  "youtube": {
+    "publish_confirm": {
+      "dialog_selectors": [
+        "xpath://ytcp-uploads-dialog",
+        "xpath://*[@role='dialog' or @role='alertdialog']"
+      ],
+      "secondary_confirm": []
+    },
+    "cleanup": {
+      "dismiss": [
+        "#close-button",
+        "#dismiss-button",
+        ".ytcp-button[aria-label=\"Close\"]"
+      ],
+      "dialog_js": "var dlg = document.querySelector('ytcp-uploads-dialog'); if (dlg) { var cb = dlg.querySelector('#close-button'); if (cb) cb.click(); }"
+    },
+    "confirm": {
+      "success_signals": [
+        "text:Video published",
+        "text:视频已发布",
+        "text:已发布",
+        "text:Published",
+        "text:Processing will begin shortly",
+        "text:即将开始处理",
+        "text:Video upload complete",
+        "text:视频上传完成",
+        "text:Upload complete",
+        "text:上传完成",
+        "text:已安排好视频发布时间",
+        "text:Video scheduled",
+        "text:Scheduled",
+        "text:已排定",
+        "text:已排定时间",
+        "text:已定时发布",
+        "text:已安排发布",
+        "text:计划于",
+        "text:Scheduled for",
+        "text:Set to publish",
+        "text:Will be published"
+      ],
+      "success_url_pattern": {
+        "not_contains": [
+          "upload"
+        ],
+        "or_contains": [
+          "channel",
+          "content",
+          "videos"
+        ]
+      },
+      "error_signals": [
+        "text:Upload failed",
+        "text:上传失败",
+        "text:Processing failed",
+        "text:处理失败",
+        "text:Something went wrong",
+        "text:出错了"
+      ],
+      "close_button": [
+        "#close-button"
+      ],
+      "dialog_selector": [
+        "xpath://ytcp-uploads-dialog"
+      ]
+    },
+    "next_steps": {
+      "next_button": [
+        "#next-button"
+      ]
+    },
+    "kids": {
+      "made_for_kids_text": [
+        "text:是，内容面向儿童",
+        "text:Yes, it's Made for Kids",
+        "text:是，内容是面向儿童的",
+        "text:Yes, it's made for kids"
+      ],
+      "not_made_for_kids_text": [
+        "text:不，内容不是面向儿童的",
+        "text:No, it's not Made for Kids",
+        "text:不，内容不是面向儿童",
+        "text:No, it's not made for kids"
+      ]
+    },
+    "form_fill": {
+      "textbox_fallback": [
+        "#textbox"
+      ]
+    },
+    "schedule": {
+      "expand_button": "#second-container-expand-button",
+      "scheduler_selector": "ytcp-visibility-scheduler",
+      "date_dropdown": "ytcp-dropdown-trigger",
+      "time_input_type": "input[type=\"text\"]",
+      "time_container": "#second-container",
+      "public_radio": "tp-yt-paper-radio-button[name=\"PUBLIC\"]"
+    },
+    "schedule_recipe": {
+      "version": 3,
+      "steps": [
+        {
+          "id": "select_public",
+          "action": "click",
+          "target": {
+            "selector": "tp-yt-paper-radio-button[name=\"PUBLIC\"]",
+            "fallbacks": []
+          },
+          "fallback": {
+            "text_match": [
+              "Public",
+              "公开"
+            ]
+          },
+          "wait_after_ms": 1500,
+          "semantic_hint": "PUBLIC 公开 visibility radio button"
+        },
+        {
+          "id": "expand_schedule",
+          "action": "click",
+          "target": {
+            "selector": "#second-container-expand-button",
+            "fallbacks": []
+          },
+          "fallback": {
+            "text_match": [
+              "Schedule",
+              "安排时间",
+              "定时发布"
+            ]
+          },
+          "wait_after_ms": 1500,
+          "semantic_hint": "schedule 安排时间 展开 expand button"
+        },
+        {
+          "id": "wait_scheduler",
+          "action": "wait",
+          "target": {
+            "selector": "ytcp-visibility-scheduler",
+            "fallbacks": [
+              "#publish-from-private-non-sponsor-selector"
+            ]
+          },
+          "max_wait_ms": 5000,
+          "semantic_hint": "scheduler 安排时间面板 visibility"
+        },
+        {
+          "id": "open_date_picker",
+          "action": "click",
+          "target": {
+            "selector": "ytcp-datetime-picker #datepicker-trigger",
+            "fallbacks": [
+              "ytcp-datetime-picker ytcp-text-dropdown-trigger",
+              "ytcp-date-picker ytcp-dropdown-trigger",
+              "ytcp-date-picker #trigger"
+            ]
+          },
+          "wait_after_ms": 800,
+          "retry": 3,
+          "semantic_hint": "日期 date 日历 calendar 打开 dropdown"
+        },
+        {
+          "id": "pick_date",
+          "action": "pick_option",
+          "container": "ytcp-date-picker",
+          "item_selector": "span.calendar-day:not(.invisible):not(.disabled)",
+          "match_text": "${day}",
+          "wait_after_ms": 500,
+          "retry": 5,
+          "semantic_hint": "日期 day 选项 calendar"
+        },
+        {
+          "id": "set_time",
+          "action": "set_value",
+          "target": {
+            "selector": "#second-container input",
+            "value_pattern": "^\\d{2}:\\d{2}$",
+            "fallbacks": [
+              "#time-of-day-container input",
+              "input[type=\"text\"]"
+            ]
+          },
+          "value": "${time}",
+          "retry": 5,
+          "wait_after_ms": 500,
+          "semantic_hint": "时间 time 输入框 HH:MM"
+        }
+      ]
+    },
+    "popups": {
+      "dismiss": [
+        "#close-button",
+        "#dismiss-button",
+        ".ytcp-button[aria-label=\"Close\"]"
+      ]
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "topview-ai",
   "version": "0.4.0",
-  "description": "Use TopView AI from Codex to research content, write Seedance prompts, generate media, and publish videos to TikTok, Instagram, and YouTube.",
+  "description": "Use TopView AI from Codex to research competitors, write video scripts and prompts, generate media and Storyboard previews, and publish videos to TikTok, Instagram, and YouTube.",
   "author": {
     "name": "Topview AI",
     "email": "support@topview.ai",
@@ -31,8 +31,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "TopView AI",
-    "shortDescription": "Research content, generate media, and publish videos.",
-    "longDescription": "TopView AI lets Codex research public web and social content, plan, create, and distribute marketing media: collect structured sources, creator lists, comments, trend signals, competitor content, and prompts; write Seedance 2.0 video prompts and storyboards; generate videos, images, talking avatars, product model shots, background removal, and voice outputs; then upload finished videos to TikTok, Instagram, and YouTube through the local social-upload workflow.",
+    "shortDescription": "Research competitors, script videos, generate media, and publish.",
+    "longDescription": "TopView AI lets Codex handle the full marketing content loop: collect structured public web and social sources, creator lists, comments, trend signals, competitor content, and prompts; turn briefs or research into video creative strategy, scripts, hooks, storyboards, and model-ready prompts; generate videos, images, Storyboard grid preview images, talking avatars, product model shots, background removal, and voice outputs; then upload finished videos to TikTok, Instagram, and YouTube through the local social-upload workflow.",
     "developerName": "Topview AI",
     "category": "Productivity",
     "capabilities": [
@@ -44,8 +44,9 @@
     "privacyPolicyURL": "https://www.topview.ai/privacy",
     "termsOfServiceURL": "https://www.topview.ai/terms",
     "defaultPrompt": [
-      "Write a Seedance video prompt.",
+      "Write a short-form product video script.",
       "Collect competitor content ideas from YouTube and Reddit.",
+      "Generate a Storyboard preview for this drama beat.",
       "Generate a short product video.",
       "Upload this video to YouTube."
     ],

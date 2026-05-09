@@ -37,6 +37,7 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 
 from shared.client import TopviewClient, TopviewError
+from shared.cli_parsers import parse_json_or_named_media_list
 from shared.upload import resolve_local_file
 
 TASK_TYPES = ("i2v", "t2v", "omni")
@@ -274,6 +275,37 @@ def resolve_file(client: TopviewClient, file_ref: str, quiet: bool) -> str:
     return resolve_local_file(file_ref, quiet=quiet, client=client)
 
 
+def build_storyboard_reference_prompt(script_prompt: str, image_count: int,
+                                      descriptions: list[str] | None = None) -> str:
+    """Build the required prompt shape for storyboard-led video generation."""
+    descriptions = descriptions or []
+    cn_numbers = {
+        2: "二", 3: "三", 4: "四", 5: "五", 6: "六", 7: "七", 8: "八",
+        9: "九", 10: "十", 11: "十一", 12: "十二", 13: "十三", 14: "十四",
+        15: "十五", 16: "十六",
+    }
+    lines = [
+        "图一（<<<Image1>>>）是分镜参考图。请严格参考它的镜头顺序、画面构图、人物/产品位置、节奏和转场，把它作为视频结构的主参考。",
+    ]
+
+    for idx in range(2, image_count + 1):
+        desc_index = idx - 2
+        desc = descriptions[desc_index].strip() if desc_index < len(descriptions) else ""
+        if not desc:
+            desc = "用户提供的参考图片"
+        label = cn_numbers.get(idx, str(idx))
+        lines.append(
+            f"图{label}（<<<Image{idx}>>>）是{desc}。请保留其中关键主体、商品外观、材质、颜色、人物特征或场景风格，并把它自然融入分镜对应画面。"
+        )
+
+    lines.extend([
+        "生成时不要只照搬分镜图；分镜图负责镜头规划，后续参考图负责商品、人物、场景等真实视觉细节。",
+        "下面是视频脚本内容：",
+        script_prompt.strip(),
+    ])
+    return "\n".join(lines)
+
+
 def build_i2v_body(args, client: TopviewClient) -> dict:
     """Build request body for Image-to-Video V2."""
     body = {}
@@ -331,14 +363,28 @@ def build_omni_body(args, client: TopviewClient) -> dict:
         "model": args.model,
         "prompt": args.prompt,
     }
-    if args.input_images:
-        images = json_mod.loads(args.input_images)
+    if args.storyboard_image:
+        additional_images = parse_json_or_named_media_list(args.input_images, "Image")
+        images = [{"name": "Image1", "fileId": args.storyboard_image}]
+        for idx, img in enumerate(additional_images, start=2):
+            images.append({"name": f"Image{idx}", "fileId": img["fileId"]})
+        body["prompt"] = build_storyboard_reference_prompt(
+            args.prompt,
+            image_count=len(images),
+            descriptions=args.reference_image_descriptions,
+        )
+        for img in images:
+            if "fileId" in img and os.path.isfile(img["fileId"]):
+                img["fileId"] = resolve_file(client, img["fileId"], args.quiet)
+        body["inputImages"] = images
+    elif args.input_images:
+        images = parse_json_or_named_media_list(args.input_images, "Image")
         for img in images:
             if "fileId" in img and os.path.isfile(img["fileId"]):
                 img["fileId"] = resolve_file(client, img["fileId"], args.quiet)
         body["inputImages"] = images
     if args.input_videos:
-        videos = json_mod.loads(args.input_videos)
+        videos = parse_json_or_named_media_list(args.input_videos, "Video")
         for vid in videos:
             if "fileId" in vid and os.path.isfile(vid["fileId"]):
                 vid["fileId"] = resolve_file(client, vid["fileId"], args.quiet)
@@ -496,10 +542,14 @@ def add_i2v_args(p):
 
 def add_omni_args(p):
     """Add omni-reference specific arguments."""
-    p.add_argument("--input-images", default=None,
-                   help='JSON array of input images, e.g. \'[{"fileId":"xxx","name":"Image1"}]\'')
-    p.add_argument("--input-videos", default=None,
-                   help='JSON array of input videos, e.g. \'[{"fileId":"xxx","name":"Video1"}]\'')
+    p.add_argument("--storyboard-image", default=None,
+                   help="Storyboard reference image. When set, this becomes Image1 and the prompt is rebuilt as storyboard + references + script.")
+    p.add_argument("--input-images", nargs="+", default=None,
+                   help='Input images: Image1=path_or_fileId or bare refs; legacy JSON array is still supported')
+    p.add_argument("--reference-image-descriptions", nargs="+", default=None,
+                   help='Descriptions for images after --storyboard-image, in order. Example: "product photo" "creator reference"')
+    p.add_argument("--input-videos", nargs="+", default=None,
+                   help='Input videos: Video1=path_or_fileId or bare refs; legacy JSON array is still supported')
     p.add_argument("--internet-search", action="store_true",
                    help="Enable internet search for omni reference")
 
@@ -534,6 +584,8 @@ def validate_args(args, parser):
             parser.error("--model is required for omni reference")
         if not args.prompt:
             parser.error("--prompt is required for omni reference")
+        if args.storyboard_image and not args.input_images:
+            parser.error("--storyboard-image requires --input-images for product/user/reference images")
     elif args.type == "i2v":
         if not args.first_frame and not args.ref_images:
             parser.error("--first-frame or --ref-images is required for image-to-video (i2v)")
@@ -667,7 +719,7 @@ Examples:
   # Omni reference with image
   python video_gen.py run --type omni --model "Standard" \\
       --prompt "Transform <<<Image1>>> into watercolor animation" \\
-      --input-images '[{"fileId":"file_abc","name":"Image1"}]'
+      --input-images Image1=photo.png
 
   # Estimate cost before running
   python video_gen.py estimate-cost --model "Seedance 1.5 Pro" \\

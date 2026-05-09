@@ -1,0 +1,27 @@
+{
+  "_comment": "默认上传配置 — 不传 --profile 时自动使用。common 为各平台公共默认值，平台段可覆盖 common。",
+
+  "common": {},
+
+  "tiktok": {
+    "visibility": "everyone",
+    "schedule": null,
+    "allow_comments": true,
+    "allow_reuse": true,
+    "disclose_content": false,
+    "ai_generated": false,
+    "high_quality": true
+  },
+
+  "instagram": {
+    "share_to_feed": true
+  },
+
+  "youtube": {
+    "made_for_kids": false,
+    "visibility": "public",
+    "schedule": null,
+    "tags": null,
+    "category": null
+  }
+}

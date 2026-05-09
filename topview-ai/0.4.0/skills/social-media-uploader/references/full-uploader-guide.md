@@ -10,7 +10,7 @@ tags: [social-media, upload, tiktok, instagram, youtube, video, schedule, automa
 
 > Upload videos to TikTok / Instagram / YouTube via `social-upload` CLI. Reuses Chrome debug browser login sessions — zero credentials, zero risk.
 
-Local install: use `C:\Users\chia1\.codex\tools\seo-browser-uploader\.venv\Scripts\social-upload.exe` from any working directory.
+Local install: use `social-upload` from `PATH` when available. If the command is not found, locate the user's own `social-upload` executable in their Codex tools directory or project virtual environment.
 
 ## Install & Run
 

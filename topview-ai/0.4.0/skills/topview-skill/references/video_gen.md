@@ -73,15 +73,55 @@ python {baseDir}/scripts/video_gen.py run \
 
 ### Omni Reference
 
+Recommended cross-platform form:
+
+```bash
+python {baseDir}/scripts/video_gen.py run \
+  --type omni \
+  --model "Standard" \
+  --prompt "Apply the style from <<<Image1>>> to the motion in <<<Video1>>>" \
+  --input-images Image1=style.png \
+  --input-videos Video1=motion.mp4 \
+  --aspect-ratio "9:16" \
+  --resolution 720
+```
+
+Storyboard-led final video:
+
+Use this when a storyboard preview image（分镜图）has already been approved and the final video also needs product, character, style, or other user-provided image references. The storyboard is always uploaded as `Image1`; the other images become `Image2`, `Image3`, and so on. The script automatically rewrites the prompt into the required structure: "图一是分镜参考图，图二是xxx图片，下面是视频脚本内容...".
+
+```bash
+python {baseDir}/scripts/video_gen.py run \
+  --type omni \
+  --model "Standard" \
+  --storyboard-image storyboard.png \
+  --input-images product.png creator.jpg \
+  --reference-image-descriptions "商品图" "达人/人物参考图" \
+  --prompt "15s UGC product video script: hook, demo, proof, CTA..." \
+  --aspect-ratio "9:16" \
+  --resolution 720 \
+  --duration 15
+```
+
+Bare paths/fileIds are auto-named in order:
+
+```bash
+python {baseDir}/scripts/video_gen.py run \
+  --type omni \
+  --model "Standard" \
+  --prompt "Combine <<<Image1>>> and <<<Image2>>> into a product video" \
+  --input-images product.png background.png
+```
+
+Legacy JSON form:
+
 ```bash
 python {baseDir}/scripts/video_gen.py run \
   --type omni \
   --model "Standard" \
   --prompt "Apply the style from <<<Image1>>> to the motion in <<<Video1>>>" \
   --input-images '[{"fileId":"file_style","name":"Image1"}]' \
-  --input-videos '[{"fileId":"file_motion","name":"Video1"}]' \
-  --aspect-ratio "9:16" \
-  --resolution 720
+  --input-videos '[{"fileId":"file_motion","name":"Video1"}]'
 ```
 
 ### Cost Estimation
@@ -132,8 +172,10 @@ python {baseDir}/scripts/video_gen.py query \
 
 | Option | Description |
 |--------|-------------|
-| `--input-images` | JSON array: `[{"fileId":"...","name":"Image1"}]` |
-| `--input-videos` | JSON array: `[{"fileId":"...","name":"Video1"}]` |
+| `--input-images` | Recommended: `Image1=product.png` or bare refs `product.png another.png`; legacy JSON array still supported |
+| `--storyboard-image` | Storyboard reference image for final video generation. When set, the script makes this `Image1`, makes `--input-images` become `Image2...`, and rebuilds the prompt as storyboard + material references + script. Requires `--input-images`. |
+| `--reference-image-descriptions` | Ordered descriptions for images after `--storyboard-image`, e.g. `"商品图"` `"达人参考图"` `"场景风格图"` |
+| `--input-videos` | Recommended: `Video1=demo.mp4`; legacy JSON array still supported |
 | `--internet-search` | Enable internet search (Standard/Fast only) |
 
 ## Native Audio (`--sound`)
@@ -148,6 +190,13 @@ Use `<<<ImageN>>>` or `<<<VideoN>>>` to reference inputs:
 ```
 "Apply the color style from <<<Image1>>> to <<<Video1>>>"
 ```
+
+Input parsing:
+
+- `Name=value` keeps the explicit name, e.g. `Image1=product.png`.
+- Bare values are auto-named in order, e.g. `product.png another.png` becomes `Image1`, `Image2`.
+- Local paths are uploaded automatically; existing fileIds are passed through.
+- If a single value starts with `[` or `{`, it is parsed as legacy JSON for backward compatibility.
 
 ## Model Recommendation
 

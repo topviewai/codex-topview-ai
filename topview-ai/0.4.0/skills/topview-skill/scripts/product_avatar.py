@@ -34,6 +34,7 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 
 from shared.client import TopviewClient, TopviewError
+from shared.cli_parsers import parse_point_pairs
 from shared.upload import resolve_local_file
 
 SUBMIT_PATH = "/v3/product_avatar/task/image_replace/submit"
@@ -84,8 +85,9 @@ def build_body(args, client: TopviewClient) -> dict:
         body["keepTarget"] = args.keep_target
     if args.version:
         body["version"] = args.version
-    if args.location:
-        body["location"] = json_mod.loads(args.location)
+    location = parse_point_pairs(args.location, args.location_points)
+    if location:
+        body["location"] = location
     if args.product_size is not None:
         body["productSize"] = args.product_size
     if args.project_id:
@@ -190,7 +192,9 @@ def add_submit_args(p):
     p.add_argument("--version", default=None, choices=VALID_VERSIONS,
                    help="API version: v3 (default) or v4 (banana_pro, supports manual mode)")
     p.add_argument("--location", default=None,
-                   help='Product coordinates as JSON 2D array, e.g. \'[[10.5, 20.0], [30.5, 40.0]]\'')
+                   help='Legacy product coordinates as JSON 2D array, e.g. \'[[10.5, 20.0], [30.5, 40.0]]\'')
+    p.add_argument("--location-points", nargs="+", default=None,
+                   help='Product coordinates as x,y pairs, e.g. 10.5,20.0 30.5,40.0')
     p.add_argument("--product-size", type=int, default=None,
                    help="Product size (enum value)")
     p.add_argument("--project-id", default=None,
@@ -355,7 +359,7 @@ Examples:
   python product_avatar.py run \\
       --product-image product.png --template-image template.png \\
       --mode manual --version v4 \\
-      --location '[[10.5, 20.0], [30.5, 40.0]]'
+      --location-points 10.5,20.0 30.5,40.0
 
   # With background-removed product image (from remove_bg.py)
   python product_avatar.py run \\
