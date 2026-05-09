@@ -6,7 +6,7 @@ TopView AI for Codex helps with the full content production loop: research compe
 
 Please install the TopView AI Codex plugin from https://github.com/topviewai/codex-topview-ai.git and make sure it is fully referenceable as [@topview-ai](plugin://topview-ai@local).
 
-This is a required full local installation flow. Do not stop after cloning the repository. You must complete every step below.
+This is a required full local installation flow. Do not stop after cloning the repository, do not only add the marketplace, and do not only copy the plugin cache. You must complete every step below.
 
 ### 1. Clone The Repository
 
@@ -24,7 +24,7 @@ On macOS/Linux, use the equivalent path:
 
 ### 2. Create The Codex Marketplace Structure
 
-Codex does not discover a plugin by scanning the repository root directly. The local marketplace must include:
+Codex does not discover a plugin by scanning the repository root directly. The local marketplace must include a marketplace index and a plugin package directory:
 
 ```text
 topview-ai/
@@ -47,6 +47,12 @@ Copy the actual plugin package files from the repository root into:
 %USERPROFILE%\Documents\Codex\local-marketplaces\topview-ai\plugins\topview-ai
 ```
 
+On macOS/Linux:
+
+```text
+~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai
+```
+
 The copied files and folders must include:
 
 ```text
@@ -64,6 +70,12 @@ Create this file:
 
 ```text
 %USERPROFILE%\Documents\Codex\local-marketplaces\topview-ai\.agents\plugins\marketplace.json
+```
+
+On macOS/Linux:
+
+```text
+~/Documents/Codex/local-marketplaces/topview-ai/.agents/plugins/marketplace.json
 ```
 
 With this content:
@@ -91,7 +103,40 @@ With this content:
 }
 ```
 
-### 4. Register The Local Marketplace
+The marketplace name/id must be exactly `local`, and the plugin source path must be exactly `./plugins/topview-ai`.
+
+### 4. Copy The Plugin Into The Codex Cache
+
+Some Codex Desktop builds do not load a newly registered local plugin until the plugin package also exists in the local plugin cache. This cache copy is required.
+
+Copy the same plugin package files into:
+
+```text
+%USERPROFILE%\.codex\plugins\cache\local\topview-ai\0.4.0
+```
+
+On macOS/Linux:
+
+```text
+~/.codex/plugins/cache/local/topview-ai/0.4.0
+```
+
+That cache directory must contain the plugin package files directly:
+
+```text
+0.4.0/
+  .codex-plugin/
+    plugin.json
+  skills/
+  tools/
+  assets/
+  results/
+  README.md
+```
+
+Do not put an extra nested `topview-ai` or `plugins/topview-ai` folder inside the cache directory.
+
+### 5. Register The Local Marketplace
 
 Run:
 
@@ -105,9 +150,9 @@ On Windows, use:
 codex plugin marketplace add "$env:USERPROFILE\Documents\Codex\local-marketplaces\topview-ai"
 ```
 
-The marketplace name/id must be `local`.
+After registration, make sure the marketplace id/name is `local`.
 
-### 5. Enable The Plugin
+### 6. Enable The Plugin
 
 Add or update this entry in the Codex config file:
 
@@ -122,9 +167,17 @@ The config file is usually located at:
 ~/.codex/config.toml
 ```
 
-### 6. Verify The Installation
+On Windows, the equivalent path is usually:
 
-Check that all of these exist:
+```text
+%USERPROFILE%\.codex\config.toml
+```
+
+### 7. Verify The Installation
+
+Do not claim installation success until both the marketplace package and the cache package are present.
+
+Check that all of these marketplace files exist:
 
 ```text
 ~/Documents/Codex/local-marketplaces/topview-ai/.agents/plugins/marketplace.json
@@ -134,32 +187,44 @@ Check that all of these exist:
 ~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/tools/seo-browser-uploader
 ```
 
-Open:
+Also check that all of these cache files exist:
+
+```text
+~/.codex/plugins/cache/local/topview-ai/0.4.0/.codex-plugin/plugin.json
+~/.codex/plugins/cache/local/topview-ai/0.4.0/skills/topview-skill/SKILL.md
+~/.codex/plugins/cache/local/topview-ai/0.4.0/skills/social-media-uploader/SKILL.md
+~/.codex/plugins/cache/local/topview-ai/0.4.0/tools/seo-browser-uploader
+```
+
+Open both plugin manifests:
 
 ```text
 ~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/.codex-plugin/plugin.json
+~/.codex/plugins/cache/local/topview-ai/0.4.0/.codex-plugin/plugin.json
 ```
 
-Confirm:
+Confirm both contain:
 
 ```json
 {
-  "name": "topview-ai",
-  "version": "0.4.0"
+  name: topview-ai,
+  version: 0.4.0
 }
 ```
 
-### 7. Restart Codex
+If the plugin still does not appear, verify that `marketplace.json` exists, that it points to `./plugins/topview-ai`, and that the cache directory path is exactly `~/.codex/plugins/cache/local/topview-ai/0.4.0`.
+
+### 8. Restart Codex
 
 Fully quit and restart the Codex app. Opening a new chat is not enough if the plugin list was already loaded.
 
-After restart, test:
+After restart, start a new chat and test:
 
 ```text
 [@topview-ai](plugin://topview-ai@local)
 ```
 
-If the plugin does not appear in the plugin list, verify that `marketplace.json` exists and that it points to `./plugins/topview-ai`. Do not claim installation success until the marketplace index, plugin package, config entry, and verification checks all pass.
+If the plugin does not appear in the plugin list, do not claim installation success. Fix the marketplace index, plugin package directory, config entry, and cache package directory first, then repeat the verification checks.
 
 ## Environment Requirements
 
