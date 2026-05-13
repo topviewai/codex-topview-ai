@@ -88,7 +88,7 @@ python {baseDir}/scripts/video_gen.py run \
 
 Storyboard-led final video:
 
-Use this when a storyboard preview image（分镜图）has already been approved and the final video also needs product, character, style, or other user-provided image references. The storyboard is always uploaded as `Image1`; the other images become `Image2`, `Image3`, and so on. The script automatically rewrites the prompt into the required structure: "图一是分镜参考图，图二是xxx图片，下面是视频脚本内容...".
+Use this when a storyboard preview image has already been approved and the final video also needs product, character, style, or other user-provided image references. The storyboard is always uploaded as `Image1`; the other images become `Image2`, `Image3`, and so on. The script automatically rewrites the prompt into the required structure: "图一是分镜参考图，图二是xxx图片，下面是视频脚本内容...".
 
 ```bash
 python {baseDir}/scripts/video_gen.py run \

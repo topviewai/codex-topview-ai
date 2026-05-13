@@ -15,12 +15,12 @@ Follow this order for every new video creation request:
 2. If key inputs are missing, ask only for the minimum needed. If the brief is workable, make reasonable defaults and state them briefly.
 3. Write a first draft before generation: creative angle, hook, script or on-screen text, storyboard or shot list, and model-ready prompt.
 4. Show the draft to the user and wait for confirmation or revisions.
-5. After the script is approved, ask whether the user wants a Storyboard preview image（分镜图）to confirm visual rhythm and shot layout before generation. Make clear they can skip this and generate the video directly.
+5. After the script is approved, ask whether the user wants a Storyboard preview image to confirm visual rhythm and shot layout before generation. Make clear they can skip this and generate the video directly. Always ask this question in the same language the user has been using in the conversation.
 6. Only after user confirmation or skip decision, hand off to the TopView generation workflow.
 
 Do not generate the final video directly from an initial one-line request unless the user explicitly asks to skip review.
 
-When the approved flow includes a Storyboard preview image（分镜图）, the handoff to video generation must keep the storyboard and material references separate. Use `video_gen.py --type omni --storyboard-image <storyboard>` and pass product, character, style, or other user-provided images through `--input-images`. The video prompt must be structured as: `图一是分镜参考图，图二是xxx图片，下面是视频脚本内容...`. The `video_gen.py` script builds this structure automatically when `--storyboard-image` is provided.
+When the approved flow includes a Storyboard preview image, the handoff to video generation must keep the storyboard and material references separate. Use `video_gen.py --type omni --storyboard-image <storyboard>` and pass product, character, style, or other user-provided images through `--input-images`. The video prompt must be structured as: `图一是分镜参考图，图二是xxx图片，下面是视频脚本内容...`. The `video_gen.py` script builds this structure automatically when `--storyboard-image` is provided.
 
 ## Script Output
 
@@ -37,12 +37,12 @@ The first draft should usually include:
 
 ## Optional Storyboard Preview
 
-After the script and shot flow are approved, recommend a Storyboard preview image（分镜图）when visual continuity matters, such as short dramas, cinematic scenes, character action, or multi-shot product stories.
+After the script and shot flow are approved, recommend a Storyboard preview image when visual continuity matters, such as short dramas, cinematic scenes, character action, or multi-shot product stories.
 
-Ask briefly:
+Ask briefly, in the same language the user has been using. Example phrasing (English; translate to match the user's language):
 
 ```text
-要不要先生成一张分镜图确认画面节奏？也可以跳过，直接生成视频。
+Want a quick storyboard preview image first to confirm the visual rhythm? You can also skip it and go straight to video generation.
 ```
 
 If the user agrees, route to `topview-skill` image workflow with `scripts/ai_image.py --type storyboard`. If the user declines or asks to proceed, skip the preview and continue to video generation.
