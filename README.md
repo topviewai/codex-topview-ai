@@ -1,4 +1,4 @@
-# TopView AI Codex Plugin
+﻿# TopView AI Codex Plugin
 
 TopView AI for Codex helps with the full content production loop: research competitors and trends, write stronger video scripts and prompts, generate media assets and Storyboard previews with TopView AI, organize outputs, and publish finished videos to social platforms.
 
@@ -31,7 +31,7 @@ Required for social publishing:
 
 - Chrome running with remote debugging on port `9222`.
 - Target TikTok, Instagram, or YouTube account already logged in inside that debug browser.
-- Python package dependencies for `tools/seo-browser-uploader/`:
+- Python package dependencies for `tools/social-uploader/`:
   - `DrissionPage>=4.0`
   - `requests>=2.28`
   - `openai>=1.0`
@@ -49,7 +49,7 @@ Install Python dependencies into the same Python environment that Codex will use
 
 ```bash
 python -m pip install -r skills/topview-skill/scripts/requirements.txt
-python -m pip install -e tools/seo-browser-uploader
+python -m pip install -e tools/social-uploader
 ```
 
 ### 2. Clone The Repository
@@ -228,7 +228,7 @@ Check that all of these marketplace files exist:
 ~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/.codex-plugin/plugin.json
 ~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/skills/topview-skill/SKILL.md
 ~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/skills/social-media-uploader/SKILL.md
-~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/tools/seo-browser-uploader
+~/Documents/Codex/local-marketplaces/topview-ai/plugins/topview-ai/tools/social-uploader
 ```
 
 Also check that all of these cache files exist:
@@ -237,7 +237,7 @@ Also check that all of these cache files exist:
 ~/.codex/plugins/cache/local/topview-ai/0.4.0/.codex-plugin/plugin.json
 ~/.codex/plugins/cache/local/topview-ai/0.4.0/skills/topview-skill/SKILL.md
 ~/.codex/plugins/cache/local/topview-ai/0.4.0/skills/social-media-uploader/SKILL.md
-~/.codex/plugins/cache/local/topview-ai/0.4.0/tools/seo-browser-uploader
+~/.codex/plugins/cache/local/topview-ai/0.4.0/tools/social-uploader
 ```
 
 Open both plugin manifests:
