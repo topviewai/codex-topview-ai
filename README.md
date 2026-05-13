@@ -296,7 +296,7 @@ For new video creation requests, the plugin is expected to follow this sequence:
 2. Ask for any missing inputs needed to make a good brief.
 3. Write a first draft script, storyboard, or model-ready prompt.
 4. Show the draft to the user and wait for confirmation or revisions.
-5. After script confirmation, ask whether to generate a Storyboard preview image（分镜图）for visual confirmation. The user can skip this and go directly to video generation.
+5. After script confirmation, ask whether to generate a Storyboard preview image for visual confirmation. The user can skip this and go directly to video generation. Always ask any user-facing confirmation question in the same language the user has been using.
 6. Only after confirmation or skip decision, generate the video with TopView.
 
 This workflow is intentional. The plugin should not jump directly from a one-line request to video generation unless the user explicitly asks to skip review.
